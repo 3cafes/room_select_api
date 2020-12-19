@@ -1,11 +1,23 @@
 const express = require('express');
-const API = require('./api/index.js');
+const API = require('./src/api');
+const { load } = require('./src/load');
+const rooms_data = require('./data/rooms.json');
+const database = require('./src/database');
 
 const app = express();
 const port = 3000;
 
 app.use('/api', API);
 
-app.listen(port, () => {
-	console.log(`Room select started on localhost:${port}`);
-});
+const server = app.listen(port, main);
+
+async function main() {
+	try {
+		await database.start();
+		await load(rooms_data.equipments, rooms_data.rooms);
+		console.log(`room_select_api listening on localhost:${port}`);
+	} catch (e) {
+		console.error(e);
+		server.close();
+	}
+}
