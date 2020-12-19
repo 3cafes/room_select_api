@@ -1,0 +1,59 @@
+{
+	"rooms": [
+		{
+			"name": "Salle #1",
+			"description": "Salle #1",
+			"capacity": 5,
+			"equipements": [
+				{
+					"name": "TV"
+				},
+				{
+					"name": "Retro Projecteur"
+				}
+			]
+		},
+		{
+			"name": "Salle #2",
+			"description": "Salle #2",
+			"capacity": 10,
+			"equipements": [
+				{
+					"name": "Retro Projecteur"
+				}
+			]
+		},
+		{
+			"name": "Salle Okjsdkso",
+			"description": "Salle Okjsdkso",
+			"capacity": 11,
+			"equipements": []
+		},
+		{
+			"name": "Salle de ouf",
+			"description": "Salle de ouf",
+			"capacity": 10,
+			"equipements": [
+				{
+					"name": "TV"
+				},
+				{
+					"name": "Retro Projecteur"
+				}
+			]
+		},
+		{
+			"name": "Salle nulle",
+			"description": "Salle nulle",
+			"capacity": 26,
+			"equipements": [
+				{
+					"name": "TV"
+				},
+				{
+					"name": "Retro Projecteur"
+				}
+			]
+		}
+	]
+}
