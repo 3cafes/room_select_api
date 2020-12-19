@@ -1,11 +1,14 @@
 const express = require('express');
-const API = require('./src/api');
+const API = require('./src/routes');
 const { load } = require('./src/load');
 const rooms_data = require('./data/rooms.json');
 const database = require('./src/database');
 
 const app = express();
 const port = 3000;
+
+//enable json body
+app.use(express.json());
 
 app.use('/api', API);
 

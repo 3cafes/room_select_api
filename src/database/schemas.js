@@ -13,8 +13,9 @@ const RoomSchema = mongoose.Schema({
 
 const ReservationSchema = mongoose.Schema({
 	room: { type: mongoose.Schema.Types.ObjectId, required: true },
-	from: { type: mongoose.Schema.Types.Date, required: true },
-	to: { type: mongoose.Schema.Types.Date, required: true },
+	date: { type: mongoose.Schema.Types.Date, required: true },
+	from: { type: String, required: true },
+	to: { type: String, required: true },
 });
 
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
