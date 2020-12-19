@@ -20,7 +20,7 @@ const ReservationSchema = mongoose.Schema({
 
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
 const Room = mongoose.model('Room', RoomSchema);
-const Reservation = mongoose.model('Reservation', RoomSchema);
+const Reservation = mongoose.model('Reservation', ReservationSchema);
 
 module.exports = {
 	Room,

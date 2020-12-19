@@ -47,7 +47,7 @@ function format_room(room, equipment_id_map) {
 
 async function new_room(room) {
 	console.log(`storing new room [${room.name}] in database...`);
-	const new_room = new Room(formated_room);
+	const new_room = new Room(room);
 	try {
 		await new_room.save();
 	} catch (e) {

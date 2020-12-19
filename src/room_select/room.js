@@ -13,7 +13,11 @@ const { Room } = require.main.require('./src/database');
 // }
 
 async function find(name) {
-	return await Room.findOne({ name: name });
+	const room = await Room.findOne({ name: name });
+	if (!room) {
+		throw 'invalid room';
+	}
+	return room;
 }
 
 module.exports = {
