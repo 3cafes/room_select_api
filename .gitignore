@@ -1,6 +1,6 @@
-# # reservations
-# data/reservations/
-# data/reservations/**
+# reservations
+data/reservations/
+data/reservations/**
 
 # Logs
 logs
