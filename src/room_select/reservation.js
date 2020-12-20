@@ -1,4 +1,6 @@
 const moment = require('moment');
+const fs = require('fs/promises');
+const path = require('path');
 const { Reservation } = require('../database');
 const roomAPI = require('./room');
 
@@ -7,6 +9,14 @@ const HOUR_FORMAT = 'HH:mm';
 const OPENING_HOUR = '09:00';
 const CLOSING_HOUR = '23:00';
 const MIN_RESERVATION_PERIOD = '01:00';
+
+//dump file
+const __basedir = path.dirname(require.main.filename);
+const DUMP_BASE_FOLDER = path.resolve(__basedir, 'data', 'reservations');
+const DUMP_FILENAME_HOUR_FORMAT = 'HH[h]mm';
+const DUMP_FOLDER_DATE_FORMAT = 'YYYY-MM-DD';
+const DUMP_JSON_DATE_FORMAT = 'DD MMMM YYYY';
+const DUMP_JSON_HOUR_FORMAT = 'HH[h]mm';
 
 const opening = moment(OPENING_HOUR, HOUR_FORMAT);
 const closing = moment(CLOSING_HOUR, HOUR_FORMAT);
@@ -58,7 +68,6 @@ function hours_are_valid(from_str, to_str) {
 }
 
 async function is_valid(reservation) {
-	console.log(reservation);
 	if (!format_is_valid(reservation)) {
 		return { success: false, message: 'invalid format' };
 	}
@@ -78,9 +87,12 @@ async function get_reservations(room_id, date) {
 async function is_room_available(room_id, reservation) {
 	const reservations = await get_reservations(room_id, reservation.date);
 
-	const sorted = reservations.sort((a, b) =>
+	reservations.sort((a, b) =>
 		moment(a.from, HOUR_FORMAT).diff(moment(b.from, HOUR_FORMAT))
 	);
+
+	const from = moment(reservation.from, HOUR_FORMAT);
+	const to = moment(reservation.to, HOUR_FORMAT);
 
 	//this is working cause we asume that there is no overlapping data
 	for (let i = -1; i < reservations.length; i++) {
@@ -114,12 +126,45 @@ async function create_reservation(room_id, reservation) {
 	}
 }
 
-async function reserve(room_id, reservation) {
-	//check room id ?
+async function dump_reservation(room_name, reservation) {
+	try {
+		console.log('dump reservation file...');
+		const date = moment(reservation.date, DATE_FORMAT);
+		const date_str = date.format(DUMP_JSON_DATE_FORMAT);
+		const from = moment(reservation.from, HOUR_FORMAT);
+		const from_str = from.format(DUMP_JSON_HOUR_FORMAT);
+		const to = moment(reservation.to, HOUR_FORMAT);
+		const to_str = to.format(DUMP_JSON_HOUR_FORMAT);
+		const date_folder = date.format(DUMP_FOLDER_DATE_FORMAT);
+		const filename = from.format(`${DUMP_FILENAME_HOUR_FORMAT}[.json]`);
+
+		let dir = path.join(DUMP_BASE_FOLDER, room_name, date_folder);
+
+		try {
+			await fs.mkdir(dir, { recursive: true });
+		} catch (e) {}
+
+		dir = path.join(dir, filename);
+		data = {
+			room: room_name,
+			date: date_str,
+			from: from_str,
+			to: to_str,
+		};
+		const data_str = JSON.stringify(data);
+		await fs.writeFile(dir, data_str);
+		console.log(`successfully write reservation file [${dir}]`);
+	} catch (e) {
+		throw `can't write reservation file: ${e.toString()}`;
+	}
+}
+
+async function reserve(room_name, reservation) {
+	const room = await roomAPI.find(room_name);
 	const { success, message } = await is_valid(reservation);
 	if (!success) throw message;
-	await create_reservation(room_id, reservation);
-	//dump .json
+	await create_reservation(room._id, reservation);
+	await dump_reservation(room_name, reservation);
 }
 
 module.exports = {

@@ -32,8 +32,7 @@ router.get('/', async (req, res) => {
 router.post('/new', async (req, res) => {
 	const { room, date, from, to } = req.body;
 	try {
-		const db_room = await roomAPI.find(room);
-		await reservationAPI.reserve(db_room.id, { date, from, to });
+		await reservationAPI.reserve(room, { date, from, to });
 		return res.status(200).send({
 			success: true,
 			message: 'reservation successfully created',
