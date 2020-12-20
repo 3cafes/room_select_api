@@ -2,7 +2,7 @@ const router = require('express').Router();
 const roomAPI = require.main.require('./src/room_select/room');
 const reservationAPI = require.main.require('./src/room_select/reservation');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
 	const { room, date } = req.body;
 	if (!room || !date) {
 		res

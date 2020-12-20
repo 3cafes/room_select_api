@@ -4,7 +4,7 @@ const RoomAPI = require.main.require('./src/room_select/room');
 const EquipmentAPI = require.main.require('./src/room_select/equipment');
 const ReservationAPI = require.main.require('./src/room_select/reservation');
 
-router.get('/available', async (req, res) => {
+router.post('/available', async (req, res) => {
 	const { date, from, to, capacity, equipments } = req.body;
 	const reservation = { date, from, to };
 	if (

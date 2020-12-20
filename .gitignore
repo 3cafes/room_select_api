@@ -1,3 +1,7 @@
+# # reservations
+# data/reservations/
+# data/reservations/**
+
 # Logs
 logs
 *.log
