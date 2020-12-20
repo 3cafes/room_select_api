@@ -6,7 +6,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const HOUR_FORMAT = 'HH:mm';
 const OPENING_HOUR = '09:00';
 const CLOSING_HOUR = '23:00';
-const MIN_RESERVATION_PERIOD = '01:20';
+const MIN_RESERVATION_PERIOD = '01:00';
 
 const opening = moment(OPENING_HOUR, HOUR_FORMAT);
 const closing = moment(CLOSING_HOUR, HOUR_FORMAT);
@@ -77,13 +77,23 @@ async function get_reservations(room_id, date) {
 
 async function is_room_available(room_id, reservation) {
 	const reservations = await get_reservations(room_id, reservation.date);
-	reservations.sort((a, b) =>
-		moment(a.from, HOUR_FORMAT).isBefore(moment(b.from, HOUR_FORMAT))
+
+	const sorted = reservations.sort((a, b) =>
+		moment(a.from, HOUR_FORMAT).diff(moment(b.from, HOUR_FORMAT))
 	);
-	if (reservations.length < 1) return true;
-	const from = moment(reservation.from, HOUR_FORMAT);
-	const to = moment(reservation.to, HOUR_FORMAT);
-	//check time slot
+
+	//this is working cause we asume that there is no overlapping data
+	for (let i = -1; i < reservations.length; i++) {
+		const end_prev_str = i < 0 ? OPENING_HOUR : reservations[i].to;
+		const end_prev = moment(end_prev_str, HOUR_FORMAT);
+		const start_next_str =
+			i + 1 >= reservations.length ? CLOSING_HOUR : reservations[i + 1].from;
+		const start_next = moment(start_next_str, HOUR_FORMAT);
+
+		if (from.isSameOrAfter(end_prev) && to.isSameOrBefore(start_next)) {
+			return true;
+		}
+	}
 
 	return false;
 }
