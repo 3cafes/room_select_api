@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const API = require('./src/routes');
 const { load } = require('./src/load');
 const rooms_data = require('./data/rooms.json');
@@ -9,6 +10,8 @@ const port = 3000;
 
 //enable json body
 app.use(express.json());
+//enable cors
+app.use(cors());
 
 app.use('/api', API);
 
