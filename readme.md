@@ -1,7 +1,7 @@
 # ROOM SELECT API
 
 Rest API for Station f room selector
-you can find the fron here: [https://github.com/3cafes/room_select_front]
+you can find the fron here: [https://documenter.getpostman.com/view/13789527/TVsuBSow]
 
 Equipments and of rooms are defined in `data/rooms.json`.
 When a user reserve a room, a reservation file is dump in `data/reservation/{reservation}/{room}/{date}/{start_hour}.json`.
@@ -65,6 +65,12 @@ const DATABASE = 'room_select_db';
 const USERNAME = 'root';
 const PASSWORD = 'root';
 
+```
+
+**instal dependencies**
+
+```
+npm install
 ```
 
 ### start development server
