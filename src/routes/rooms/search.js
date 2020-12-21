@@ -9,7 +9,7 @@ router.post('/available', async (req, res) => {
 	const reservation = { date, from, to };
 	if (
 		!capacity ||
-		!(await ReservationAPI.is_valid(reservation)) ||
+		!(await ReservationAPI.is_valid(reservation)).success ||
 		!(await EquipmentAPI.equipment_list_is_valid(equipments))
 	) {
 		return res.status(400).send({
