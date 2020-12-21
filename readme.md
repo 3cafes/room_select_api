@@ -1,13 +1,40 @@
 # ROOM SELECT API
 
 Rest API for Station f room selector
+you can find the fron here: [https://github.com/3cafes/room_select_front]
 
-List of rooms is defined in `data/rooms.json`. List of availlable equipments is defined in `data/equipments.json`.
-When a user reserve a room, a reservation file is dump in `data/reservation/{reservation}`.
+Equipments and of rooms are defined in `data/rooms.json`.
+When a user reserve a room, a reservation file is dump in `data/reservation/{reservation}/{room}/{date}/{start_hour}.json`.
+
+`rooms.json` is loaded when you start the api and database is updated if a modification have been done.
+
+the room file formats is the following:
+
+```
+{
+	"equipments": ["TV", "Retro Projecteur", ...],
+	"rooms": [
+		{
+			"name": "Salle #1",
+			"description": "Salle #1",
+			"capacity": 5,
+			"equipments": [
+				{
+					"name": "TV"
+				},
+				{
+					"name": "Retro Projecteur"
+				}
+			]
+		},
+		...
+	]
+}
+```
 
 ## API
 
-`GET /rooms/search/available`
+list of routes is available at this link: [https://www.getpostman.com/collections/e2ea121539910def9800];
 
 ## RUN
 
@@ -21,7 +48,7 @@ docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_
 ```
 
 **if you have mongodb installed**
-just start mongo deamon
+start mongo deamon
 
 ```
 sudo systemctl start mongodb
@@ -30,6 +57,15 @@ sudo systemctl start mongodb
 
 **configure database connection**
 set correct host and password in `src/database/config.js`
+
+```
+const HOST = 'localhost';
+const PORT = 27017;
+const DATABASE = 'room_select_db';
+const USERNAME = 'root';
+const PASSWORD = 'root';
+
+```
 
 ### start development server
 
